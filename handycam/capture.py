@@ -45,11 +45,12 @@ class HandyVideoCapture(cv2.VideoCapture):
         i = 0
 
         while True:
+            ret, frame = self.read()
+
             i += 1
             if not (i-1) % step_size == 0:
                 continue
 
-            ret, frame = self.read()
             if not ret:
                 break
 
