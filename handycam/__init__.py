@@ -1,2 +1,2 @@
-from ctypes.wintypes import HACCEL
 from .capture import HandyVideoCapture
+from .writer import HandyVideoWriter
