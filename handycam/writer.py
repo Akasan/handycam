@@ -1,7 +1,7 @@
 import cv2
 
 
-class HandyVideoWriter(cv2.VideoWriter):
+class VideoWriter(cv2.VideoWriter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
     

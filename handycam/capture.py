@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 
-class HandyVideoCapture(cv2.VideoCapture):
+class VideoCapture(cv2.VideoCapture):
     """HandyVideoCapture is a wrapper for cv2.VideoCapture.
     This class was made to make cv2.VideoCapture more handy.
 
