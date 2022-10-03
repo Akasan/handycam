@@ -33,7 +33,7 @@ class VideoCapture(cv2.VideoCapture):
         return int(self.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     def __len__(self) -> int:
-        return self.frame_count
+        return self.FRAME_COUNT
 
     def __enter__(self) -> "HandyVideoCapture":
         return self
