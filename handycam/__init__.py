@@ -1,2 +1,2 @@
-from .capture import HandyVideoCapture
-from .writer import HandyVideoWriter
+from .capture import VideoCapture
+from .writer import VideoWriter
