@@ -58,3 +58,8 @@ class VideoCapture(cv2.VideoCapture):
 
     def __del__(self):
         self.release()
+
+
+if __name__ == "__main__":
+    with VideoCapture(0) as cap:
+        print(cap.isOpened())
