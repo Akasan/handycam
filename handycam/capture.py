@@ -1,20 +1,36 @@
+from typing import Tuple
 from typing import Iterator
 import numpy as np
 import cv2
 
 
-class VideoCapture(cv2.VideoCapture):
-    """HandyVideoCapture is a wrapper for cv2.VideoCapture.
-    This class was made to make cv2.VideoCapture more handy.
+class VideoCapture:
+    def __init__(self, src, *args, **kwargs):
+        self.cap = cv2.VideoCapture(src)
+        self.current_position = 0
+        self.skip_size = kwargs.get("skip_size", 1)
+        self.is_video = kwargs.get("is_video", False)
 
-    Examples:
-        >>> with HandyVideoCapture(0) as cap:
-        ...     for frame in cap.reads():
-        ...         pass
-    """
+    def get(self, *args, **kwargs):
+        return self.cap.get(*args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def set(self, *args, **kwargs):
+        self.cap.set(*args, **kwargs)
+
+    def _increment_position(self):
+        if self.is_video:
+            self.current_position += self.skip_size
+            self.set(cv2.CAP_PROP_POS_FRAMES, self.current_position)
+
+    def read(self) -> Tuple[bool, np.ndarray]:
+        self._increment_position()
+        return self.cap.read()
+
+    def __enter__(self) -> "VideoCapture":
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.cap.release()
 
     @property
     def FRAME_COUNT(self) -> int:
@@ -35,31 +51,5 @@ class VideoCapture(cv2.VideoCapture):
     def __len__(self) -> int:
         return self.FRAME_COUNT
 
-    def __enter__(self) -> "HandyVideoCapture":
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.release()
-
-    def reads(self, step_size: int = 1) -> Iterator[np.ndarray]:
-        i = 0
-
-        while True:
-            ret, frame = self.read()
-
-            i += 1
-            if not (i-1) % step_size == 0:
-                continue
-
-            if not ret:
-                break
-
-            yield frame
-
-    def __del__(self):
-        self.release()
-
-
-if __name__ == "__main__":
-    with VideoCapture(0) as cap:
-        print(cap.isOpened())
+    def isOpened(self) -> bool:
+        return self.cap.isOpened()
