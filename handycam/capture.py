@@ -8,7 +8,7 @@ class VideoCapture:
     def __init__(self, src, *args, **kwargs):
         self.cap = cv2.VideoCapture(src)
         self.current_position = 0
-        self.skip_size = kwargs.get("skip_size", 1)
+        self.step_size = kwargs.get("step_size", 1)
         self.is_video = kwargs.get("is_video", False)
 
     def get(self, *args, **kwargs):
@@ -19,7 +19,7 @@ class VideoCapture:
 
     def _increment_position(self):
         if self.is_video:
-            self.current_position += self.skip_size
+            self.current_position += self.step_size
             self.set(cv2.CAP_PROP_POS_FRAMES, self.current_position)
 
     def read(self) -> Tuple[bool, np.ndarray]:
